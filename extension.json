@@ -17,7 +17,7 @@
 		}
 	},
 	"config": {
-		"ImapAuthorizationActive": true,
+		"ImapAuthorizationActive": false,
 		"ImapAuthorizationSmtpServerAddress": "localhost",
 		"ImapAuthorizationSmtpServerPort": 25,
 		"ImapAuthorizationImapServerAddress": "localhost",
