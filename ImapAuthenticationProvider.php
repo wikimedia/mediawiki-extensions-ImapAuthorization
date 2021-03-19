@@ -33,6 +33,8 @@ use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\PasswordAuthenticationRequest;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserNameUtils;
 
 /**
  * The class ImapAuthenticationProvider is an implementation of the
@@ -65,7 +67,13 @@ class ImapAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 	 *  false.
 	 */
 	public function testUserExists( $username, $flags = User::READ_NORMAL ) {
-		$username = User::getCanonicalName( $username, 'usable' );
+		if ( method_exists( 'MediaWiki\User\UserNameUtils', 'getCanonical' ) ) {
+			// MW 1.35+
+			$userNameUtils = MediaWikiServices::getInstance()->getUserNameUtils();
+			$username = $userNameUtils->getCanonical( $username, UserNameUtils::RIGOR_USABLE );
+		} else {
+			$username = User::getCanonicalName( $username, 'usable' );
+		}
 
 		global $wgImapAuthorizationActive;
 		if ( $wgImapAuthorizationActive === false ) {
@@ -184,7 +192,13 @@ class ImapAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 			return AuthenticationResponse::newAbstain();
 		}
 
-		$username = User::getCanonicalName( $req->username, 'usable' );
+		if ( method_exists( 'MediaWiki\User\UserNameUtils', 'getCanonical' ) ) {
+			// MW 1.35+
+			$userNameUtils = MediaWikiServices::getInstance()->getUserNameUtils();
+			$username = $userNameUtils->getCanonical( (string)$req->username, UserNameUtils::RIGOR_USABLE );
+		} else {
+			$username = User::getCanonicalName( $req->username, 'usable' );
+		}
 
 		global $wgImapAuthorizationActive;
 		if ( $wgImapAuthorizationActive === false ) {
