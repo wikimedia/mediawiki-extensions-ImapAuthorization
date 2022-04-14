@@ -1,4 +1,5 @@
 {
+	"name": "ImapAuthorization",
 	"private": true,
 	"scripts": {
 		"test": "grunt test"
