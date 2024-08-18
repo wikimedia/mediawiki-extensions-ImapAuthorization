@@ -66,7 +66,7 @@ class ImapAuthenticationProvider extends AbstractPrimaryAuthenticationProvider {
 	 * @return bool Returns true if the username exists on the SMTP server. Else returns
 	 *  false.
 	 */
-	public function testUserExists( $username, $flags = User::READ_NORMAL ) {
+	public function testUserExists( $username, $flags = IDBAccessObject::READ_NORMAL ) {
 		if ( method_exists( 'MediaWiki\User\UserNameUtils', 'getCanonical' ) ) {
 			// MW 1.35+
 			$userNameUtils = MediaWikiServices::getInstance()->getUserNameUtils();
